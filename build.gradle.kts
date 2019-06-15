@@ -1,5 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
+import org.jetbrains.dokka.gradle.DokkaTask
 plugins {
     kotlin("jvm") version "1.3.31"
     id("com.github.johnrengelman.shadow") version "5.0.0"
@@ -31,13 +31,13 @@ nukkit {
     author = "UramnOIL"
 }
 
-defaultTasks = mutableListOf("shadowJar")
-
-tasks.dokka {
-    outputFormat = "html"
-    outputDirectory = "$buildDir/javadoc"
-}
-
-tasks.shadowJar {
-
+tasks {
+    named<ShadowJar>("shadowJar") {
+        archiveBaseName.set(project.name)
+        mergeServiceFiles()
+    }
+    named<DokkaTask>("dokka") {
+        outputFormat = "html"
+        outputDirectory = "$buildDir/javadoc"
+    }
 }
